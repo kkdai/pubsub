@@ -1,18 +1,13 @@
 package pubsub
 
-import (
-	"fmt"
-	"testing"
-)
+import "testing"
 
 func TestBasicFunction(t *testing.T) {
 	ser := NewPubsub(1)
 	c1 := ser.Subscribe("ch1")
 	ser.Publish("test1", "ch1")
 
-	if val, ok := <-c1; ok {
-		fmt.Printf(" Got content from subscribed topic %v\n", val)
-	} else {
+	if _, ok := <-c1; !ok {
 		t.Error(" Error found on subscribed.\n")
 	}
 }
@@ -25,13 +20,15 @@ func TestTwoSubscribetor(t *testing.T) {
 	ser.Publish("test2", "ch1")
 	ser.Publish("test1", "ch2")
 
-	if val, ok := <-c1; ok && val == "test2" {
-		fmt.Printf("ret: %v \n", val)
-	} else {
+	val, ok := <-c1
+	if !ok || val != "test2" {
 		t.Errorf("Error found \n")
 	}
 
-	fmt.Printf("c2= %v \n", <-c2)
+	val, ok = <-c2
+	if !ok || val != "test1" {
+		t.Errorf("Error found \n")
+	}
 }
 
 func TestAddSub(t *testing.T) {
@@ -40,12 +37,8 @@ func TestAddSub(t *testing.T) {
 	ser.AddSubscription(c1, "ch2")
 	ser.Publish("test2", "ch2")
 
-	//fmt.Printf("c1:%v \n", <-c1)
 	if val, ok := <-c1; !ok {
 		//Not get! Occur error.
 		t.Errorf("error on c1:", val)
-	} else {
-		fmt.Println("c1:", val)
 	}
-
 }

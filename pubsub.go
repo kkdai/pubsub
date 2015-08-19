@@ -5,11 +5,12 @@ type stringMapChanList map[string][]chan interface{}
 
 // Pubsub struct: Only content a userIndex and accessDB which content a chan map
 type Pubsub struct {
-	//Capacity for each chan
+	//Capacity for each chan buffer
 	capacity int
 
-	//DB Level
+	//map to store "chan -> Topic List" for find subscription
 	clientMapTopics chanMapStringList
+	//map to store "topic -> chan List" for publish
 	topicMapClients stringMapChanList
 }
 
@@ -18,41 +19,27 @@ type Pubsub struct {
 func (p *Pubsub) Subscribe(topics ...string) chan interface{} {
 	//init new chan using capacity as channel buffer
 	workChan := make(chan interface{}, p.capacity)
-
-	var topicList []string
-	for _, topic := range topics {
-		if chanList, ok := p.topicMapClients[topic]; ok {
-			chanList = append(chanList, workChan)
-			p.topicMapClients[topic] = chanList
-		} else {
-			var newChanList []chan interface{}
-			newChanList = append(newChanList, workChan)
-			p.topicMapClients[topic] = newChanList
-		}
-		topicList = append(topicList, topic)
-	}
-
-	//Add in  server DB
-	p.clientMapTopics[workChan] = topicList
+	p.updateTopicMapClient(workChan, topics)
 	return workChan
+}
+
+func (p *Pubsub) updateTopicMapClient(clientChan chan interface{}, topics []string) {
+	var updateChanList []chan interface{}
+	var ok bool
+	for _, topic := range topics {
+		if updateChanList, ok = p.topicMapClients[topic]; ok {
+			updateChanList = append(updateChanList, clientChan)
+		} else {
+			updateChanList = append(updateChanList, clientChan)
+		}
+		p.topicMapClients[topic] = updateChanList
+	}
+	p.clientMapTopics[clientChan] = topics
 }
 
 //AddSubscription:  Add a new topic subscribe to specific client channel.
 func (p *Pubsub) AddSubscription(clientChan chan interface{}, topics ...string) {
-	var topicList []string
-	for _, topic := range topics {
-		if chanList, ok := p.topicMapClients[topic]; ok {
-			chanList = append(chanList, clientChan)
-			p.topicMapClients[topic] = chanList
-		} else {
-			var newChanList []chan interface{}
-			newChanList = append(newChanList, clientChan)
-			p.topicMapClients[topic] = newChanList
-		}
-		topicList = append(topicList, topic)
-	}
-
-	p.clientMapTopics[clientChan] = topicList
+	p.updateTopicMapClient(clientChan, topics)
 }
 
 //Publish: Publish a content to a list of channels
