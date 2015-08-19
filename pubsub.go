@@ -23,6 +23,7 @@ func (p *Pubsub) Subscribe(topics ...string) chan interface{} {
 	for _, topic := range topics {
 		if chanList, ok := p.topicMapClients[topic]; ok {
 			chanList = append(chanList, workChan)
+			p.topicMapClients[topic] = chanList
 		} else {
 			var newChanList []chan interface{}
 			newChanList = append(newChanList, workChan)
@@ -34,6 +35,19 @@ func (p *Pubsub) Subscribe(topics ...string) chan interface{} {
 	//Add in  server DB
 	p.clientMapTopics[workChan] = topicList
 	return workChan
+}
+
+func (p *Pubsub) AddSubscription(clientChan chan interface{}, topics ...string) {
+	var topicList []string
+	for _, topic := range topics {
+		if chanList, ok := p.topicMapClients[topic]; ok {
+			chanList = append(chanList, clientChan)
+			p.topicMapClients[topic] = chanList
+		}
+		topicList = append(topicList, topic)
+	}
+
+	p.clientMapTopics[clientChan] = topicList
 }
 
 //Pub: Publish a content to a list of channels
