@@ -1,6 +1,9 @@
 package pubsub
 
-import "testing"
+import (
+	"testing"
+	"time"
+)
 
 func TestBasicFunction(t *testing.T) {
 	ser := NewPubsub(1)
@@ -41,4 +44,29 @@ func TestAddSub(t *testing.T) {
 		//Not get! Occur error.
 		t.Errorf("error on c1:", val)
 	}
+}
+
+func TestRemoveSub(t *testing.T) {
+	ser := NewPubsub(10)
+	c1 := ser.Subscribe("ch1", "ch2")
+	ser.Publish("test1", "ch2")
+
+	if val, ok := <-c1; !ok {
+		t.Errorf("error on addsub c1:", val)
+	}
+
+	ser.RemoveSubscription(c1, "ch1")
+	ser.Publish("test2", "ch1")
+
+	select {
+	case val := <-c1:
+		t.Errorf("Should not get %v notify on remove topic\n", val)
+		break
+	case <-time.After(time.Second):
+		break
+	}
+	//if val, ok := <-c1; ok {
+	//	t.Errorf("error on remove Sub c1:", val)
+	//}
+
 }
