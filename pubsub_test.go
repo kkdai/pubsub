@@ -37,10 +37,15 @@ func TestTwoSubscribetor(t *testing.T) {
 func TestAddSub(t *testing.T) {
 	ser := NewPubsub(10)
 	c1 := ser.Subscribe("ch1")
-	c2 := ser.Subscribe("ch1")
 	ser.AddSubscription(c1, "ch2")
-	ser.Publish("test2", "ch1")
+	ser.Publish("test2", "ch2")
 
-	fmt.Printf("first c1:%v \n", <-c1)
-	fmt.Printf("c2= %v \n", <-c2)
+	//fmt.Printf("c1:%v \n", <-c1)
+	if val, ok := <-c1; !ok {
+		//Not get! Occur error.
+		t.Errorf("error on c1:", val)
+	} else {
+		fmt.Println("c1:", val)
+	}
+
 }

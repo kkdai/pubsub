@@ -37,12 +37,17 @@ func (p *Pubsub) Subscribe(topics ...string) chan interface{} {
 	return workChan
 }
 
+//AddSubscription:  Add a new topic subscribe to specific client channel.
 func (p *Pubsub) AddSubscription(clientChan chan interface{}, topics ...string) {
 	var topicList []string
 	for _, topic := range topics {
 		if chanList, ok := p.topicMapClients[topic]; ok {
 			chanList = append(chanList, clientChan)
 			p.topicMapClients[topic] = chanList
+		} else {
+			var newChanList []chan interface{}
+			newChanList = append(newChanList, clientChan)
+			p.topicMapClients[topic] = newChanList
 		}
 		topicList = append(topicList, topic)
 	}
@@ -50,8 +55,8 @@ func (p *Pubsub) AddSubscription(clientChan chan interface{}, topics ...string) 
 	p.clientMapTopics[clientChan] = topicList
 }
 
-//Pub: Publish a content to a list of channels
-//     The content could be any type.
+//Publish: Publish a content to a list of channels
+//         The content could be any type.
 func (p *Pubsub) Publish(content interface{}, topics ...string) {
 	for _, topic := range topics {
 		if chanList, ok := p.topicMapClients[topic]; ok {
