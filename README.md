@@ -10,10 +10,13 @@ What is Pubsub
 Pubsub is prove of concept implement for [Redis](http://redis.io/) "Pub/Sub" messaging management feature. SUBSCRIBE, UNSUBSCRIBE and PUBLISH implement the Publish/Subscribe messaging paradigm where (citing Wikipedia) senders (publishers) are not programmed to send their messages to specific receivers (subscribers).  (sited from [here](http://redis.io/topics/pubsub))
 
 
+Installation and Usage
+=============
+
 
 Install
 ---------------
-`go get github.com/kkdai/pubsub`
+        go get github.com/kkdai/pubsub
 
 
 Usage
