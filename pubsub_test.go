@@ -42,7 +42,7 @@ func TestAddSub(t *testing.T) {
 
 	if val, ok := <-c1; !ok {
 		//Not get! Occur error.
-		t.Errorf("error on c1:", val)
+		t.Errorf("error on c1:%v", val)
 	}
 }
 
@@ -52,7 +52,7 @@ func TestRemoveSub(t *testing.T) {
 	ser.Publish("test1", "ch2")
 
 	if val, ok := <-c1; !ok {
-		t.Errorf("error on addsub c1:", val)
+		t.Errorf("error on addsub c1:%v", val)
 	}
 
 	ser.RemoveSubscription(c1, "ch1")
