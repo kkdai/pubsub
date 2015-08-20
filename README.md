@@ -1,7 +1,7 @@
 Pubsub
 ==============
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/kkdai/pubsub/master/LICENSE)  [![GoDoc](https://godoc.org/github.com/kkdai/pubsub?status.svg)](https://godoc.org/github.com/kkdai/pubsub)  [![Build Status](https://travis-ci.org/kkdai/pubsub?branch=master)](https://travis-ci.org/kkdai/pubsub)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/kkdai/pubsub/master/LICENSE)  [![GoDoc](https://godoc.org/github.com/kkdai/pubsub?status.svg)](https://godoc.org/github.com/kkdai/pubsub)  [![Build Status](https://travis-ci.org/kkdai/pubsub.svg?branch=master)](https://travis-ci.org/kkdai/pubsub)
 
 
 
