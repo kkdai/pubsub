@@ -41,7 +41,6 @@ func TestAddSub(t *testing.T) {
 	ser.Publish("test2", "ch2")
 
 	if val, ok := <-c1; !ok {
-		//Not get! Occur error.
 		t.Errorf("error on c1:%v", val)
 	}
 }
@@ -65,8 +64,4 @@ func TestRemoveSub(t *testing.T) {
 	case <-time.After(time.Second):
 		break
 	}
-	//if val, ok := <-c1; ok {
-	//	t.Errorf("error on remove Sub c1:", val)
-	//}
-
 }
