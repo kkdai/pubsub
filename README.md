@@ -22,6 +22,7 @@ Install
 Usage
 ---------------
 
+```go
         package main
         
         import (
@@ -66,7 +67,7 @@ Usage
         		break
         	}
         }
-
+```
 
 Inspired By
 =============
