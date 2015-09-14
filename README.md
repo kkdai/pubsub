@@ -77,6 +77,12 @@ Inspired By
 - [chandru/pubsub](https://github.com/tuxychandru/pubsub)
 
 
+Project52
+---------------
+
+It is one of my [project 52](https://github.com/kkdai/project52).
+
+
 License
 ---------------
 
