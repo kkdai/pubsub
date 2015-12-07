@@ -69,8 +69,17 @@ Usage
         }
 ```
 
+Benchmark
+---------------
+
+```
+BenchmarkAddSub-4       	    1000	   1905005 ns/op
+BenchmarkRemoveSub-4    	   10000	    199662 ns/op
+BenchmarkBasicFunction-4	 5000000	       231 ns/op
+```
+
 Inspired By
-=============
+---------------
 
 
 - [Redis: Pubsub](http://redis.io/topics/pubsub)

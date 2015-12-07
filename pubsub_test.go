@@ -1,6 +1,7 @@
 package pubsub
 
 import (
+	"log"
 	"testing"
 	"time"
 )
@@ -63,5 +64,41 @@ func TestRemoveSub(t *testing.T) {
 		break
 	case <-time.After(time.Second):
 		break
+	}
+}
+
+func BenchmarkAddSub(b *testing.B) {
+	big := NewPubsub(100000)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		big.Subscribe("1234567890")
+	}
+}
+
+func BenchmarkRemoveSub(b *testing.B) {
+	big := NewPubsub(100000)
+	var subChans []chan interface{}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		c1 := big.Subscribe("1234567890")
+		subChans = append(subChans, c1)
+	}
+
+	b.ResetTimer()
+	for _, v := range subChans {
+		big.RemoveSubscription(v, "1234567890")
+	}
+}
+
+func BenchmarkBasicFunction(b *testing.B) {
+	ser := NewPubsub(1000000)
+	c1 := ser.Subscribe("ch1")
+
+	for i := 0; i < b.N; i++ {
+		ser.Publish("test1", "ch1")
+
+		if _, ok := <-c1; !ok {
+			log.Println(" Error found on subscribed.")
+		}
 	}
 }
