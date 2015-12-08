@@ -73,9 +73,9 @@ Benchmark
 ---------------
 
 ```
-BenchmarkAddSub-4       	    1000	   1905005 ns/op
-BenchmarkRemoveSub-4    	   10000	    199662 ns/op
-BenchmarkBasicFunction-4	 5000000	       231 ns/op
+BenchmarkAddSub-4       	     500	   2906467 ns/op	 1605949 B/op	       3 allocs/op
+BenchmarkRemoveSub-4    	   10000	    232910 ns/op	  174260 B/op	      16 allocs/op
+BenchmarkBasicFunction-4	 5000000	       232 ns/op	      19 B/op	       1 allocs/op
 ```
 
 Inspired By
