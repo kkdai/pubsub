@@ -72,6 +72,8 @@ Usage
 Benchmark
 ---------------
 
+Benchmark include memory usage.
+
 ```
 BenchmarkAddSub-4       	     500	   2906467 ns/op	 1605949 B/op	       3 allocs/op
 BenchmarkRemoveSub-4    	   10000	    232910 ns/op	  174260 B/op	      16 allocs/op
